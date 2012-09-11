@@ -13,7 +13,7 @@ import com.jme3.scene.shape.Box;
  * @author normenhansen
  */
 public class Main extends SimpleApplication {
-
+    public Level levelState = new Level();
     public static void main(String[] args) {
         Main app = new Main();
         app.start();
@@ -21,14 +21,7 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        Box b = new Box(Vector3f.ZERO, 1, 1, 1);
-        Geometry geom = new Geometry("Box", b);
-
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Blue);
-        geom.setMaterial(mat);
-
-        rootNode.attachChild(geom);
+        stateManager.attach(levelState);
     }
 
     @Override
