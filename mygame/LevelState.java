@@ -28,7 +28,11 @@ public class LevelState extends AbstractAppState{
       this.app = (SimpleApplication)app;          // cast to a more specific class
       
       StarControl testStar = new StarControl(); //Just a generic test of StarControl
-      testStar.createStar(levelRoot,this.app,null,1,1,1);
+      TargetControl testTarget = new TargetControl();
+      
+      for(int i=0;i<100;i++)
+          testStar.randomStar(levelRoot, this.app);
+   
       this.app.getRootNode().attachChild(levelRoot);
              
    }
@@ -43,11 +47,7 @@ public class LevelState extends AbstractAppState{
       // Pause and unpause
       super.setEnabled(enabled);
     }
-    
-    public void generateLevel(int num)
-    {
 
-    }
  
     @Override
     public void update(float tpf) {

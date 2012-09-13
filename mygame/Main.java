@@ -23,7 +23,6 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         stateManager.attach(levelState);
-        levelState.generateLevel(1);
        
     }
 
