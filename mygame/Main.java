@@ -10,18 +10,21 @@ import com.jme3.scene.shape.Box;
 
 /**
  * test
- * @author normenhansen
+ * @author adam && zach
  */
 public class Main extends SimpleApplication {
-    public Level levelState = new Level();
+    public LevelState levelState = new LevelState();
     public static void main(String[] args) {
         Main app = new Main();
         app.start();
+        
     }
 
     @Override
     public void simpleInitApp() {
         stateManager.attach(levelState);
+        levelState.generateLevel(1);
+       
     }
 
     @Override
