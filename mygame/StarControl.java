@@ -1,6 +1,8 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.collision.CollisionResults;
 import com.jme3.export.JmeExporter;
@@ -23,10 +25,14 @@ import java.util.Random;
 
 /**
  *
- * @author adam&&zach
+ * @author zach
  */
 public class StarControl implements Control{
-
+    BulletAppState bulletAppState;
+    
+    public StarControl(){
+             
+    }
     public Control cloneForSpatial(Spatial spatial) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -36,18 +42,24 @@ public class StarControl implements Control{
     }
     
     public void createStar(Node LevelState, SimpleApplication app,float x, float y, float z, Vector3f vec){
-        
-      CollisionResults results = new CollisionResults();
+          
+      
       Box box1 = new Box(vec,x,y,z);
-      Spatial wall = new Geometry("Box", box1 );
+      Spatial star = new Geometry("Box", box1 );
       Material mat1 = new Material(app.getAssetManager(), 
                                     "Common/MatDefs/Misc/Unshaded.j3md");
       mat1.setColor("Color", ColorRGBA.Blue);
+      star.setMaterial(mat1);
       
-      setSpatial(wall);
-      wall.setMaterial(mat1);
-      
-      LevelState.attachChild(wall);
+      RigidBodyControl starControl = new RigidBodyControl();
+
+      starControl.setSpatial(star);
+      starControl.setPhysicsLocation(vec);
+      starControl.setMass(0);
+      starControl.setFriction(0);
+      starControl.setKinematic(false);
+      app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(starControl);
+      app.getRootNode().attachChild(star);
     }
     
     public boolean isValidLocation(float x, float y, float z){
@@ -81,15 +93,16 @@ public class StarControl implements Control{
     //Will be used in the future to populate a LevelState with stars.
     public void randomStar(Node levelState, SimpleApplication app)
     {
+        
         int x,y,z;
         Random ran = new Random();
         x=ran.nextInt(500);
         y=ran.nextInt(500);
         z=ran.nextInt(500);
-            Vector3f temp = new Vector3f(x,y,z);
-            StarControl star = new StarControl();
-            star.createStar(levelState,app,2,2,2,temp);
-        
+        Vector3f temp = new Vector3f(x,y,z);
+        StarControl star = new StarControl();
+        star.createStar(levelState,app,2,2,2,temp);
+                
     }
     
 }
