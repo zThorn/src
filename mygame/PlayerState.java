@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame;
 
 import com.jme3.app.state.AbstractAppState;
@@ -17,7 +13,7 @@ import com.jme3.scene.shape.Box;
  * @author Adam
  */
 public class PlayerState extends AbstractAppState{
-    Node playerRoot = new Node("playerRoot");
+    Node playerRoot = new Node("playerRoot"); //This will contain both our gun and player model.
     Box playerBounds = new Box(Vector3f.ZERO, 1f, 6f, 1f);
     Main app;
     
@@ -40,6 +36,7 @@ public class PlayerState extends AbstractAppState{
     @Override
     public void update(float tpf)
     {
+        //Movement mode tells the update function whether to check for WASD or to wait for an impulse
         if(app.doImpulse())
         {
             playerRoot.getChild("playerGeom").getControl(RigidBodyControl.class)
@@ -47,6 +44,7 @@ public class PlayerState extends AbstractAppState{
             app.doneImpulse();
         }
         
+        //Need to change this to be more efficient. Get child has to query all children in playerRoot
         playerRoot.getChild("playerGeom").setLocalTranslation(playerRoot.getChild("playerGeom").getControl(RigidBodyControl.class).getPhysicsLocation());
     }
     
