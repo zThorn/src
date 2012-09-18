@@ -22,13 +22,7 @@ import java.util.Random;
 public class LevelState extends AbstractAppState{
     private SimpleApplication app;
     private Node levelRoot = new Node("levelRoot");
-    private BulletAppState b;
-    LevelState(BulletAppState bulletAppState) {
-        b=bulletAppState;
-    }
-    
-    
-    
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
       super.initialize(stateManager, app); 
@@ -54,8 +48,6 @@ public class LevelState extends AbstractAppState{
       // Pause and unpause
       super.setEnabled(enabled);
     }
-
- 
     @Override
     public void update(float tpf) {
     }

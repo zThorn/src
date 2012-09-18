@@ -20,9 +20,8 @@ public class Main extends SimpleApplication {
     Material defaultMat;
     private boolean shouldImpulse = false;
     PlayerState playerState;
-    public static BulletAppState bulletAppState;
-    public LevelState levelState = new LevelState(bulletAppState);
-    
+    public BulletAppState bulletAppState;
+    LevelState levelState = new LevelState();
     public static void main(String[] args) {
         Main app = new Main();
         app.start();

@@ -56,7 +56,7 @@ public class StarControl implements Control{
       starControl.setSpatial(star);
       starControl.setPhysicsLocation(vec);
       starControl.setMass(0);
-      starControl.setFriction(0);
+      starControl.setFriction(1);
       starControl.setKinematic(false);
       app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(starControl);
       app.getRootNode().attachChild(star);
@@ -96,12 +96,12 @@ public class StarControl implements Control{
         
         int x,y,z;
         Random ran = new Random();
-        x=ran.nextInt(500);
-        y=ran.nextInt(500);
-        z=ran.nextInt(500);
-        Vector3f temp = new Vector3f(x,y,z);
+        x=ran.nextInt(100);
+        y=ran.nextInt(100);
+        z=ran.nextInt(100);
+        Vector3f temp = new Vector3f(x,y,z);    //used for generating a position(0-100,0-100,0-100)
         StarControl star = new StarControl();
-        star.createStar(levelState,app,2,2,2,temp);
+        star.createStar(levelState,app,2,2,2,temp); //Creates a star in levelState with size 2,2,2, in position temp
                 
     }
     
