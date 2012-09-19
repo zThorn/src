@@ -94,14 +94,16 @@ public class StarControl implements Control{
     public void randomStar(Node levelState, SimpleApplication app)
     {
         
-        int x,y,z;
+        int x,y,z,s;
         Random ran = new Random();
-        x=ran.nextInt(100);
-        y=ran.nextInt(100);
-        z=ran.nextInt(100);
+        x=ran.nextInt(500);
+        y=ran.nextInt(500);
+        z=ran.nextInt(500);
+        s=ran.nextInt(10);
+        s+=4;
         Vector3f temp = new Vector3f(x,y,z);    //used for generating a position(0-100,0-100,0-100)
         StarControl star = new StarControl();
-        star.createStar(levelState,app,2,2,2,temp); //Creates a star in levelState with size 2,2,2, in position temp
+        star.createStar(levelState,app,s,s,s,temp); //Creates a star in levelState with size 2,2,2, in position temp
                 
     }
     
