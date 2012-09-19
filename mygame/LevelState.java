@@ -5,6 +5,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -21,8 +22,8 @@ import java.util.Random;
 public class LevelState extends AbstractAppState{
     private SimpleApplication app;
     private Node levelRoot = new Node("levelRoot");
-    
-     @Override
+
+    @Override
     public void initialize(AppStateManager stateManager, Application app) {
       super.initialize(stateManager, app); 
       this.app = (SimpleApplication)app;          // cast to a more specific class
@@ -47,8 +48,6 @@ public class LevelState extends AbstractAppState{
       // Pause and unpause
       super.setEnabled(enabled);
     }
-
- 
     @Override
     public void update(float tpf) {
     }

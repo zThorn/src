@@ -16,16 +16,18 @@ import com.jme3.scene.Spatial;
  * @author adam && zach
  */
 public class Main extends SimpleApplication {
-    public LevelState levelState = new LevelState();
+    
+    Material defaultMat;
+    private boolean shouldImpulse = false;
+    PlayerState playerState;
+    public BulletAppState bulletAppState;
+    LevelState levelState = new LevelState();
     public static void main(String[] args) {
         Main app = new Main();
         app.start();
         
     }
-    Material defaultMat;
-    private boolean shouldImpulse = false;
-    PlayerState playerState;
-    public BulletAppState bulletAppState;
+
     
     @Override
     public void simpleInitApp() 
@@ -40,7 +42,7 @@ public class Main extends SimpleApplication {
         bulletAppState.getPhysicsSpace().setGravity(Vector3f.ZERO);
 
         stateManager.attach(levelState);
-        
+
         
         playerState = new PlayerState(this);
         stateManager.attach(playerState);
@@ -53,6 +55,7 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleUpdate(float tpf) {
+        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
         Spatial player = playerState.playerRoot.getChild("playerGeom");
         cam.setLocation(player.getLocalTranslation());
     }
@@ -79,4 +82,5 @@ public class Main extends SimpleApplication {
     {
         shouldImpulse = false;
     }
+
 }
