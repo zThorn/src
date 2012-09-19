@@ -56,7 +56,7 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleUpdate(float tpf) {
         bulletAppState.getPhysicsSpace().enableDebug(assetManager);
-        Spatial player = playerState.playerRoot.getChild("playerGeom");
+        Spatial player = playerState.playerRoot;
         cam.setLocation(player.getLocalTranslation());
     }
 

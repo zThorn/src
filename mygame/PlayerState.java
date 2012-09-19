@@ -2,6 +2,8 @@ package mygame;
 
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
+import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -14,23 +16,22 @@ import com.jme3.scene.shape.Box;
  */
 public class PlayerState extends AbstractAppState{
     Node playerRoot = new Node("playerRoot"); //This will contain both our gun and player model.
-    Box playerBounds = new Box(Vector3f.ZERO, 1f, 6f, 1f);
+    CapsuleCollisionShape playerBounds = new CapsuleCollisionShape(.5f, 4f);
     Main app;
+    GhostControl ghostPlayer = new GhostControl(playerBounds);
+    Vector3f movementVector;
     
     
     PlayerState(Main app)
     {
         this.app = app;
-        Geometry player_geo = new Geometry("playerGeom", playerBounds);
-        player_geo.setMaterial(app.defaultMat);
-        playerRoot.attachChild(player_geo);
-        playerRoot.setLocalTranslation(app.getCamera().getLocation());
-        RigidBodyControl player_phys = new RigidBodyControl(2f);
-        player_geo.addControl(player_phys);
-        this.app.getStateManager().getState(BulletAppState.class)
-                .getPhysicsSpace().add(player_phys);
-        
+        playerRoot.setLocalTranslation(app.getCamera().getLocation());        
         app.getRootNode().attachChild(playerRoot);
+        
+        playerRoot.addControl(ghostPlayer);
+        this.app.bulletAppState.getPhysicsSpace().add(ghostPlayer);
+        
+        movementVector = new Vector3f();
     }
     
     @Override
@@ -39,13 +40,17 @@ public class PlayerState extends AbstractAppState{
         //Movement mode tells the update function whether to check for WASD or to wait for an impulse
         if(app.doImpulse())
         {
-            playerRoot.getChild("playerGeom").getControl(RigidBodyControl.class)
-                    .setLinearVelocity(app.getCamera().getDirection().mult(25));
+            movementVector = movementVector.add(app.getCamera().getDirection().mult(20));
             app.doneImpulse();
         }
         
         //Need to change this to be more efficient. Get child has to query all children in playerRoot
-        playerRoot.getChild("playerGeom").setLocalTranslation(playerRoot.getChild("playerGeom").getControl(RigidBodyControl.class).getPhysicsLocation());
+        
+        if(movementVector.length() > 0)
+            playerRoot.move(movementVector.mult(tpf));
+        
+        if(ghostPlayer.getOverlappingCount() > 0)
+            movementVector.zero();
     }
     
 }
