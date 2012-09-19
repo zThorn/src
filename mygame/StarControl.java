@@ -29,7 +29,7 @@ import java.util.Random;
  */
 public class StarControl implements Control{
     BulletAppState bulletAppState;
-    
+    public int s; //size of the stars
     public StarControl(){
              
     }
@@ -94,7 +94,7 @@ public class StarControl implements Control{
     public void randomStar(Node levelState, SimpleApplication app)
     {
         
-        int x,y,z,s;
+        int x,y,z;
         Random ran = new Random();
         x=ran.nextInt(500);
         y=ran.nextInt(500);
@@ -107,4 +107,5 @@ public class StarControl implements Control{
                 
     }
     
+    public int size(){return this.s;}
 }
