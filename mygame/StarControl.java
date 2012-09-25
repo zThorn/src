@@ -45,7 +45,7 @@ public class StarControl implements Control{
           
       
       Box box1 = new Box(vec,x,y,z);
-      Spatial star = new Geometry("Box", box1 );
+      Spatial star = new Geometry("star", box1 );
       Material mat1 = new Material(app.getAssetManager(), 
                                     "Common/MatDefs/Misc/Unshaded.j3md");
       mat1.setColor("Color", ColorRGBA.Blue);
