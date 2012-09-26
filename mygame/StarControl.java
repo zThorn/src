@@ -15,6 +15,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
 import java.io.IOException;
@@ -22,46 +23,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-
 /**
  *
  * @author zach
  */
-public class StarControl implements Control{
+public class StarControl extends AbstractControl{
     BulletAppState bulletAppState;
     public int s; //size of the stars
-    public StarControl(){
-             
-    }
-    public Control cloneForSpatial(Spatial spatial) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    public void setSpatial(Spatial spatial) {
-        
+    StarControl(int size)
+    {
+        s=size;
     }
-    
-    public void createStar(Node LevelState, SimpleApplication app,float x, float y, float z, Vector3f vec){
-          
-      
-      Box box1 = new Box(vec,x,y,z);
-      Spatial star = new Geometry("star", box1 );
-      Material mat1 = new Material(app.getAssetManager(), 
-                                    "Common/MatDefs/Misc/Unshaded.j3md");
-      mat1.setColor("Color", ColorRGBA.Blue);
-      star.setMaterial(mat1);
-      
-      RigidBodyControl starControl = new RigidBodyControl();
-
-      starControl.setSpatial(star);
-      starControl.setPhysicsLocation(vec);
-      starControl.setMass(0);
-      starControl.setFriction(1);
-      starControl.setKinematic(false);
-      app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(starControl);
-      app.getRootNode().attachChild(star);
-    }
-    
     public boolean isValidLocation(float x, float y, float z){
         
         return true;
@@ -89,23 +62,26 @@ public class StarControl implements Control{
     public void read(JmeImporter im) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    //Will be used in the future to populate a LevelState with stars.
-    public void randomStar(Node levelState, SimpleApplication app)
-    {
-        
-        int x,y,z;
-        Random ran = new Random();
-        x=ran.nextInt(500);
-        y=ran.nextInt(500);
-        z=ran.nextInt(500);
-        s=ran.nextInt(10);
-        s+=4;
-        Vector3f temp = new Vector3f(x,y,z);    //used for generating a position(0-100,0-100,0-100)
-        StarControl star = new StarControl();
-        star.createStar(levelState,app,s,s,s,temp); //Creates a star in levelState with size 2,2,2, in position temp
-                
-    }
-    
+
     public int size(){return this.s;}
+
+
+    public Control cloneForSpatial(Spatial spatial) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setSpatial(Spatial spatial) {
+        super.setSpatial(spatial);
+      
+    }
+
+    @Override
+    protected void controlUpdate(float tpf) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected void controlRender(RenderManager rm, ViewPort vp) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
