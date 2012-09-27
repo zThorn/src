@@ -23,6 +23,8 @@ public class PlayerState extends AbstractAppState{
     Main app;
     Vector3f movementVector;
     
+    private boolean updateStarDetection = false;
+    
     
     PlayerState(Main app)
     {
@@ -50,10 +52,26 @@ public class PlayerState extends AbstractAppState{
     @Override
     public void update(float tpf)
     {
-        //Movement mode tells the update function whether to check for WASD or to wait for an impulse
+        if(updateStarDetection)
+        {
+            if(!playerCollider.canCollide() && playerCollider.isAttached())
+            {
+                playerCollider.setAttached(null);
+                playerCollider.enableCollision(true);
+                updateStarDetection = false;
+            }
+        }
+        
         if(app.doImpulse())
         {
-            playerCollider.setLinearVelocity(app.getCamera().getDirection().mult(20));
+            if(playerCollider.isAttached())
+            {
+                playerCollider.enableCollision(false);
+                updateStarDetection = true;
+            }
+            
+            playerCollider.setLinearVelocity(app.getCamera().getDirection().mult(40));         
+            
             app.doneImpulse();
         }
         
