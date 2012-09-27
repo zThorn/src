@@ -30,7 +30,8 @@ import java.util.Random;
 public class StarControl extends AbstractControl{
     BulletAppState bulletAppState;
     public int s; //size of the stars
-
+    
+    
     StarControl(int size)
     {
         s=size;
@@ -39,37 +40,29 @@ public class StarControl extends AbstractControl{
         
         return true;
     }
-    public void setEnabled(boolean enabled) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean isEnabled() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void update(float tpf) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void render(RenderManager rm, ViewPort vp) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    
+    @Override
     public void write(JmeExporter ex) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        super.write(ex);
     }
-
+    
+    @Override
     public void read(JmeImporter im) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        super.read(im);
     }
 
     public int size(){return this.s;}
 
 
     public Control cloneForSpatial(Spatial spatial) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        final StarControl control = new StarControl(size());
+    /* Optional: use setters to copy userdata into the cloned control */
+    // control.setIndex(i); // example
+    control.setSpatial(spatial);
+    return control;
     }
-
+    
+    @Override
     public void setSpatial(Spatial spatial) {
         super.setSpatial(spatial);
       
@@ -77,11 +70,14 @@ public class StarControl extends AbstractControl{
 
     @Override
     protected void controlUpdate(float tpf) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        /** Implement your spatial's behaviour here.
+    * From here you can modify the scene graph and the spatial
+    * (transform them, get and set userdata, etc).
+    * This loop controls the spatial while the Control is enabled. */
     }
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        /* Optional: rendering manipulation (for advanced users) */
     }
 }

@@ -51,6 +51,8 @@ public class Main extends SimpleApplication {
         flyCam.setMoveSpeed(0f);
         inputManager.addMapping("Move", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addListener(actionListener, new String[]{"Move"});
+        inputManager.addMapping("test", new KeyTrigger(KeyInput.KEY_E));
+        inputManager.addListener(actionListener, new String[]{"test"});
     }
 
     @Override
@@ -69,6 +71,10 @@ public class Main extends SimpleApplication {
         public void onAction(String name, boolean keyPressed, float tpf) {
           if (name.equals("Move") && !keyPressed) {
             shouldImpulse = true;
+          }
+          
+          if (name.equals("test") && !keyPressed) {
+            playerState.resetGhost();
           } 
         }
     };

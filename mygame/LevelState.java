@@ -1,5 +1,6 @@
 package mygame;
 
+import com.bulletphysics.collision.shapes.CollisionShape;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -50,14 +51,19 @@ public class LevelState extends AbstractAppState{
         mat1.setColor("Color", ColorRGBA.Blue);
         star.setMaterial(mat1);
         
-        testStar.setSpatial(star); 
+        /*testStar.setSpatial(star); 
+        starControl.setSpatial(star);*/
+        
+        star.addControl(testStar);
         starControl.setSpatial(star);
+        
         starControl.setPhysicsLocation(temp);
         starControl.setMass(0);
         starControl.setFriction(1);
         starControl.setKinematic(false);
-        app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(starControl);   
-        levelRoot.attachChild(star);
+        app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(starControl); 
+        levelRoot.attachChild(star); 
+        
            
       }
    
