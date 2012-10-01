@@ -7,6 +7,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -61,6 +62,7 @@ public class LevelState extends AbstractAppState{
         starControl.setMass(0);
         starControl.setFriction(1);
         starControl.setKinematic(false);
+        starControl.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_03);
         app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(starControl); 
         levelRoot.attachChild(star); 
         
