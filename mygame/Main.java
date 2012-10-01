@@ -14,6 +14,11 @@ import com.jme3.scene.Spatial;
 /**
  * test
  * @author adam && zach
+ * 
+ * COLLISION GROUPS:
+ * 1 - Player RigidBody Collids w/ 3
+ * 2 - Player GhostControl collides 2/ 3
+ * 3 - Stars 
  */
 public class Main extends SimpleApplication {
     
@@ -74,8 +79,8 @@ public class Main extends SimpleApplication {
           }
           
           if (name.equals("test") && !keyPressed) {
-            playerState.resetGhost();
-          } 
+            playerState.test();
+          }
         }
     };
     
