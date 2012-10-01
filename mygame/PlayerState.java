@@ -18,12 +18,12 @@ import com.jme3.scene.shape.Box;
  * @author Adam
  */
 public class PlayerState extends AbstractAppState{
-    Node playerRoot = new Node("playerRoot"); //This will contain both our gun and player model.
+    public static float PlayerWidth     = 1.5f;
+    public static float PlayerHeight    = 4f;
+    
+    Node playerRoot = new Node("playerRoot"); //This will contains the player ghost and rigid body (for collision detection) as well as th player weapon model.
     PlayerCollisionControl playerCollider;
     Main app;
-    Vector3f movementVector;
-    
-    private boolean updateStarDetection = false;
     
     
     PlayerState(Main app)
@@ -33,53 +33,36 @@ public class PlayerState extends AbstractAppState{
         playerRoot.setLocalTranslation(app.getCamera().getLocation());        
         app.getRootNode().attachChild(playerRoot);
         
-        playerRoot.addControl(playerCollider);        
-        this.app.bulletAppState.getPhysicsSpace().add(playerCollider);
-        this.app.bulletAppState.getPhysicsSpace().addCollisionListener(playerCollider);
+        playerCollider.attachToWorld(playerRoot, this.app.bulletAppState.getPhysicsSpace());
+    }
+    public boolean canJump()
+    {
+        if(!playerCollider.isColliding()) return true;
         
-        movementVector = new Vector3f();
         
-        /*Box box1 = new Box(Vector3f.ZERO, 1f, 1f,1f);
-      Spatial star = new Geometry("Box", box1 );
-      Material mat1 = new Material(app.getAssetManager(), 
-                                    "Common/MatDefs/Misc/Unshaded.j3md");
-      mat1.setColor("Color", ColorRGBA.Blue);
-      star.setMaterial(mat1);
-      
-      playerRoot.attachChild(star);*/
+        return false;
     }
     
     @Override
     public void update(float tpf)
     {
-        if(updateStarDetection)
-        {
-            if(!playerCollider.canCollide() && playerCollider.isAttached())
-            {
-                playerCollider.setAttached(null);
-                playerCollider.enableCollision(true);
-                updateStarDetection = false;
-            }
-        }
         
-        if(app.doImpulse())
+        if(app.doImpulse() /*&& canJump()*/)
         {
-            if(playerCollider.isAttached())
-            {
-                playerCollider.enableCollision(false);
-                updateStarDetection = true;
-            }
-            
-            playerCollider.setLinearVelocity(app.getCamera().getDirection().mult(40));         
+            playerCollider.setLinearVelocity(app.getCamera().getDirection().mult(100));         
             
             app.doneImpulse();
         }
         
         playerRoot.setLocalTranslation(playerCollider.getPhysicsLocation());
     }
-
-    void resetGhost() {
-        movementVector.zero();
+    
+    public void test()
+    {        
+        System.out.print("\nColliding: " + playerCollider.isColliding());
+        System.out.print("\nCan collide: " + playerCollider.canCollide());
+        System.out.print("\nCollision normal: " +playerCollider.getCollisionNormal());
+        
     }
     
 }
