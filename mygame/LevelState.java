@@ -63,6 +63,7 @@ public class LevelState extends AbstractAppState{
         starControl.setFriction(1);
         starControl.setKinematic(false);
         starControl.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_03);
+        starControl.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_02);
         app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(starControl); 
         levelRoot.attachChild(star); 
         
