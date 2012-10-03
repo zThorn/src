@@ -18,7 +18,8 @@ import com.jme3.scene.Spatial;
 public class PlayerCollisionControl extends RigidBodyControl
         implements PhysicsTickListener, PhysicsCollisionListener{
     
-    static public final CapsuleCollisionShape playerBounds = new CapsuleCollisionShape(1.5f, 4f);
+    static public final CapsuleCollisionShape playerBounds = new CapsuleCollisionShape(PlayerState.PlayerWidth, PlayerState.PlayerHeight);
+    static public final CapsuleCollisionShape playerGhostBounds = new CapsuleCollisionShape(PlayerState.PlayerWidth + .5f, PlayerState.PlayerHeight + .5f);
     private final Main app;
     private final PlayerState playerState;
     
@@ -33,7 +34,9 @@ public class PlayerCollisionControl extends RigidBodyControl
         this.app = app;
         this.playerState = player;  
         
-        playerGhost = new GhostControl(playerBounds);
+        this.setMass(2f);
+        
+        playerGhost = new GhostControl(playerGhostBounds);
         
         this.setCollisionGroup(COLLISION_GROUP_01);
         this.setCollideWithGroups(COLLISION_GROUP_03);
@@ -58,8 +61,10 @@ public class PlayerCollisionControl extends RigidBodyControl
     
     @Override
     public void prePhysicsTick(PhysicsSpace space, float f) {
-        if(isColliding())
-            setLinearVelocity(Vector3f.ZERO);      
+        if(isColliding() /*&& getLinearVelocity() != Vector3f.ZERO*/)
+        {
+            setLinearVelocity(Vector3f.ZERO);  
+        }
         
     }
     
@@ -68,12 +73,11 @@ public class PlayerCollisionControl extends RigidBodyControl
         if(playerGhost.getOverlappingCount() > 0 && canCollide() && !isColliding())
         {
             isColliding = true;
-            System.out.print("Ghost collision detected: isColliding("+ playerGhost.getOverlappingCount() +") = " + isColliding());
+            System.out.println("Ghost collision detected: isColliding("+ playerGhost.getOverlappingCount() +") = " + isColliding());            
         }else if(isColliding() && playerGhost.getOverlappingCount() == 0) {            
             isColliding = false;
-            collisionNormal = Vector3f.ZERO;
-            
-            System.out.print("Ghost collision not detected: isColliding("+ playerGhost.getOverlappingCount() +") = " + isColliding());
+            collisionNormal = null;
+            System.out.println("Ghost collision not detected: isColliding("+ playerGhost.getOverlappingCount() +") = " + isColliding());
         }
         
         
@@ -85,7 +89,7 @@ public class PlayerCollisionControl extends RigidBodyControl
         physicsSpace.add(this);
         physicsSpace.addTickListener(this);
         physicsSpace.addCollisionListener(this);
-        physicsSpace.add(playerGhost);        
+        physicsSpace.add(playerGhost);   
     }
     
     @Override
@@ -105,6 +109,34 @@ public class PlayerCollisionControl extends RigidBodyControl
         if(star != null)
         {
             collisionNormal = event.getNormalWorldOnB();
+            float starSize = (float)star.getControl(StarControl.class).size();
+            float x, y, z;
+            
+            if(collisionNormal.getX() == 1 || collisionNormal.getX() == -1)
+            {
+                x = collisionNormal.getX();
+            }else{
+                x = 0;
+            }
+            
+            if(collisionNormal.getY() == 1 || collisionNormal.getY() == -1)
+            {
+                y = collisionNormal.getY();
+            }else{
+                y = 0;
+            }
+            
+            if(collisionNormal.getZ() == 1 || collisionNormal.getZ() == -1)
+            {
+                z = collisionNormal.getZ();
+            }else{
+                z = 0;
+            }
+            
+            Vector3f starEdge = star.getLocalTranslation().add((starSize+(PlayerState.PlayerWidth/2))*x, (starSize+(PlayerState.PlayerWidth/2))*y, (starSize+(PlayerState.PlayerHeight/2))*z);
+            System.out.println("Local: " + star.getLocalTranslation() + "\nedge: " + starEdge);
+            setPhysicsLocation(starEdge);
+            
         }else{
             System.out.print("Unknwon collision between: " + event.getNodeA().toString() + " and " + event.getNodeB().toString() + "\n");
         }

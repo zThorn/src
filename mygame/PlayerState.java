@@ -12,6 +12,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,6 +41,7 @@ public class PlayerState extends AbstractAppState{
         if(!playerCollider.isColliding()) return true;
         
         
+        
         return false;
     }
     
@@ -62,6 +64,9 @@ public class PlayerState extends AbstractAppState{
         System.out.print("\nColliding: " + playerCollider.isColliding());
         System.out.print("\nCan collide: " + playerCollider.canCollide());
         System.out.print("\nCollision normal: " +playerCollider.getCollisionNormal());
+               
+        Vector3f norm = playerCollider.getCollisionNormal();
+        System.out.print("Norm: " + norm);
         
     }
     
