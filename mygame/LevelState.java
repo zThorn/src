@@ -44,7 +44,7 @@ public class LevelState extends AbstractAppState{
         Vector3f temp = new Vector3f(x,y,z);    //used for generating a position(0-100,0-100,0-100)
           
         StarControl testStar = new StarControl(s);
-        Box box1 = new Box(temp,s,s,s);
+        Box box1 = new Box(Vector3f.ZERO,s,s,s);
         Spatial star = new Geometry("star", box1 );
         RigidBodyControl starControl = new RigidBodyControl();
         Material mat1 = new Material(app.getAssetManager(), 
@@ -52,20 +52,25 @@ public class LevelState extends AbstractAppState{
         mat1.setColor("Color", ColorRGBA.Blue);
         star.setMaterial(mat1);
         
+        star.setLocalTranslation(temp);
+        
         /*testStar.setSpatial(star); 
-        starControl.setSpatial(star);*/
+        starControl.setSpatial(star);*/      
+        
+         
         
         star.addControl(testStar);
         starControl.setSpatial(star);
         
-        starControl.setPhysicsLocation(temp);
-        starControl.setMass(0);
-        starControl.setFriction(1);
-        starControl.setKinematic(false);
+        starControl.setMass(10f);
+        starControl.setFriction(1f);
+        starControl.setKinematic(true);        
+        //starControl.setPhysicsLocation(temp);
         starControl.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_03);
         starControl.setCollideWithGroups(PhysicsCollisionObject.COLLISION_GROUP_01 | PhysicsCollisionObject.COLLISION_GROUP_02);
+        
+        levelRoot.attachChild(star);
         app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(starControl); 
-        levelRoot.attachChild(star); 
         
            
       }
